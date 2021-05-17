@@ -1,0 +1,19 @@
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+    [entryPoints.web.http.redirections.entryPoint]
+      to = "websecure"
+      scheme = "https"
+
+  [entryPoints.websecure]
+    address = ":443"
+[api]
+  dashboard = true
+[certificatesResolvers.lets-encrypt.acme]
+  email = "jirimajer@me.com"
+  storage = "acme.json"
+  [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
+[providers.docker]
+  useBindPortIP = true
+[providers.file]
+  filename = "traefik_dynamic.toml"

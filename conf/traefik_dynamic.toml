@@ -1,0 +1,21 @@
+[http.middlewares.simpleAuth.basicAuth]
+  users = [
+    "admin:$apr1$F/Het0gp$6q1EjdZSLctKOYSiaLtzG."
+  ]
+[http.routers.api]
+  rule = "Host(`monitor.xn--ji-oja54b.eu`)"
+  entrypoints = ["websecure"]
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+[http.routers.ha]
+  rule = "Host(`ha.xn--ji-oja54b.eu`)"
+  entrypoints = ["websecure"]
+  service = 'hass'
+  [http.routers.ha.tls]
+    certResolver = "lets-encrypt"
+[http.services]
+  [http.services.hass.loadbalancer]
+    [[http.services.hass.loadbalancer.servers]]
+      url = 'http://192.168.1.100:8123'
